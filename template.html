@@ -7,9 +7,37 @@
 <meta name="description" content="Physicists' papers on natural language" />
 <meta name="keywords" content="" />
 <title>Physicists' papers on natural language</title>
+
+<style>
+.collapsible {
+  border: none;
+  outline: none;
+  background:none!important;
+  color:inherit;
+  padding:0!important;
+  font: inherit;
+  /*border is optional*/
+  border-bottom:1px solid #444; 
+  cursor: pointer;
+}
+
+.content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  background-color: #f1f1f1;
+}
+</style>
+
 </head>
 
+
+
+
+
 <body id="top">
+
 
 <h1 class="title">Physicists' papers on natural language from a complex systems viewpoint</h1>
 
@@ -36,6 +64,24 @@
 <p style="text-align:right">
 <a href="http://validator.w3.org/check?uri=referer">
 <img src="http://www.w3.org/Icons/valid-xhtml11" alt="[Valid XHTML 1.1]" height="31" width="88" /></a></p>
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.maxHeight){
+      content.style.maxHeight = null;
+    } else {
+      content.style.maxHeight = content.scrollHeight + "px";
+    } 
+  });
+}
+</script>
 
 </body>
 
