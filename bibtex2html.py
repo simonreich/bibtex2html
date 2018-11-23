@@ -48,7 +48,7 @@ def cleanup_author(s):
     '\\~A': '&Atilde;', '\\~o': '&otilde;', '\\~O': '&Otilde;', 
     '.': ' ', "\\'\\": '', '{': '', '}': '', ' And ': ' and '}
 
-    for k, v in dictionary.iteritems():
+    for k, v in dictionary.items():
         s = s.replace(k, v)
 
     s = s.strip()
@@ -164,7 +164,7 @@ full_dictlist = dictlist
 
 
 # Keep only articles in the list
-dictlist = [d for d in dictlist if d['type'] == 'article']
+#dictlist = [d for d in dictlist if d['type'] == 'article']
 # keep only articles that have author and title
 dictlist = [d for d in dictlist if 'author' in d and 'title' in d]
 dictlist = [d for d in dictlist if d['author'] != '' and d['title'] != '']
@@ -180,7 +180,7 @@ newer = years[-1]
 ###########################################################################
 # Set the fields to be exported to html (following this order)
 mandatory = ['author', 'title']
-optional = ['journal', 'eprint', 'volume', 'pages', 'year', 'url', 'doi']
+optional = ['journal', 'eprint', 'volume', 'pages', 'year', 'url', 'doi', 'abstract', 'note']
 ###########################################################################
 
 
@@ -197,6 +197,12 @@ for y in reversed(range(older, newer + 1)):
     if y in years:
         html += '<h3 id="y{0}">{0}</h3>\n\n\n<ul>\n'.format(y)
         for d in dictlist:
+            # generate bibtex text
+            bibtex = "@" + str(d['type']) + '{' + str(d['id']) + ',<br />'
+            for key, value in d.items():
+                if (str(key) != 'type') and (str(key) != 'id') and (str(key) != 'file') :
+                    bibtex += '&nbsp;&nbsp;' + str(key) + ' = {' + str(value) + '},<br />'
+            bibtex += '}'
             if 'year' in d and int(d['year']) == y:
                 mandata = [d[key] for key in mandatory]
                 html += '<li>{0}, <i>{1}</i>'.format(*mandata)
@@ -210,10 +216,21 @@ for y in reversed(range(older, newer + 1)):
                             a = cleanup_page(d[t])
                             html += ', {0}'.format(a)
                         if t == 'year': html += ', {0}'.format(d[t])
+                        if t == 'note': html += ' ({0})'.format(d[t])
+                html += '<br />'
+                html += ' <button class="collapsible">[Bib]</button><div class="content"><p>' + bibtex +'</p></div>'
+                for t in optional:
+                    if t in d:
+                        if t == 'abstract': 
+                            html += ' <button class="collapsible">[Abstract]</button><div class="content"><p>{0}</p></div>'.format(d[t])
+                for t in optional:
+                    if t in d:
                         if t == 'url': 
-                            html += ' <a href="{0}">[html]</a>'.format(d[t])
+                            html += ' <a href="{0}">[URL]</a>'.format(d[t])
                         if t == 'doi': 
-                            html += ' <a href="{0}">[doi]</a>'.format(d[t])
+                            html += ' <a href="https://doi.org/{0}">[doi]</a>'.format(d[t])
+                        if t == 'file': 
+                            html += ' <a href="{0}}">[pdf]</a>'.format(d[t])
 
                 html += '</li>\n'
                 counter += 1
