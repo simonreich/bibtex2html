@@ -3,8 +3,10 @@
 
 
 """
-Copyright (C) 2009-2015 Gustavo de Oliveira. Licensed under the GPL (see the
-license file).
+Copyright (C) 2009-2018 Gustavo de Oliveira. 
+Copyright (C) 2018 Simon Reich
+
+Licensed under the GPLv2 (see the license file).
 
 This program reads a BibTeX file and converts it to a list of references in
 HTML format.
