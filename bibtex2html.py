@@ -1,4 +1,5 @@
 #! /usr/bin/env python2
+# -*- coding: UTF-8 -*-
 
 
 """
@@ -30,6 +31,7 @@ written to the file `output.html`.
 
 import sys
 from datetime import date
+import calendar
 
 
 def cleanup_author(s):
@@ -179,8 +181,9 @@ newer = years[-1]
 
 ###########################################################################
 # Set the fields to be exported to html (following this order)
-mandatory = ['author', 'title']
-optional = ['journal', 'eprint', 'volume', 'pages', 'year', 'url', 'doi', 'abstract', 'note']
+mandatory = ['author', 'title', 'year']
+optional = ['journal', 'eprint', 'volume', 'pages', 'url', 'doi', 'abstract', 'note', 'address', 'annote', 'booktitle', 'chapter', 'crossref', 'edition', 'editor', 'howpublished', 'institution', 'key', 'month', 'number', 'organization', 'publisher', 'school', 'series', 'type']
+
 ###########################################################################
 
 
@@ -195,42 +198,50 @@ counter = 0
 html = ''
 for y in reversed(range(older, newer + 1)):
     if y in years:
-        html += '<h3 id="y{0}">{0}</h3>\n\n\n<ul>\n'.format(y)
+        html += '\n<h3 id="y{0}">{0}</h3>\n\n<ul>\n'.format(y)
         for d in dictlist:
             # generate bibtex text
             bibtex = "@" + str(d['type']) + '{' + str(d['id']) + ',<br />'
-            for key, value in d.items():
-                if (str(key) != 'type') and (str(key) != 'id') and (str(key) != 'file') :
+            for key in sorted(d):
+                if (str(key) != 'type') and (str(key) != 'id') and (str(key) != 'file'):
+                    value = d[key]
                     bibtex += '&nbsp;&nbsp;' + str(key) + ' = {' + str(value) + '},<br />'
             bibtex += '}'
             if 'year' in d and int(d['year']) == y:
                 mandata = [d[key] for key in mandatory]
-                html += '<li>{0}, <i>{1}</i>'.format(*mandata)
+                html += '<li><b>{1}</b>,<br /> {0} ({2}).<br />'.format(*mandata)
 
-                for t in optional:
-                    if t in d:
-                        if t == 'journal': html += ', {0}'.format(d[t])
-                        if t == 'eprint': html += ':{0}'.format(d[t])
-                        if t == 'volume': html += ' <b>{0}</b>'.format(d[t])
-                        if t == 'pages': 
-                            a = cleanup_page(d[t])
-                            html += ', {0}'.format(a)
-                        if t == 'year': html += ', {0}'.format(d[t])
-                        if t == 'note': html += ' ({0})'.format(d[t])
+                if 'journal' in d: html += '{0}'.format(d['journal'])
+                if 'eprint' in d: html += '{0}'.format(d['eprint'])
+                if 'booktitle' in d: html += '{0}'.format(d['booktitle'])
+                if 'volume' in d: html += '. Vol {0}'.format(d['volume'])
+                if 'chapter' in d: html += '. {0} ch'.format(d['chapter'])
+                if 'pages' in d: 
+                    a = cleanup_page(d['pages'])
+                    html += ', pp. {0}'.format(a)
+                if 'month' in d: 
+                    try:
+                        month = calendar.month_name[int(d['month'])]
+                    except:
+                        month = str(d['month']).capitalize()
+                    html += ', {0}'.format(month)
+                if 'edition' in d: html += '. {0} ed'.format(d['edition'])
+                if 'editor' in d: html += '. Editor {0}'.format(d['editor'])
+                if 'institution' in d: html += '. {0}'.format(d['institution'])
+                if 'address' in d: html += '. {0}'.format(d['address'])
+                if 'number' in d: html += ' ({0})'.format(d['number'])
+                if 'organization' in d: html += '. {0}'.format(d['organization'])
+                if 'publisher' in d: html += '. {0}'.format(d['publisher'])
+                if 'school' in d: html += '. {0}'.format(d['school'])
+                if 'series' in d: html += '. {0}'.format(d['series'])
+                if 'note' in d: html += ' ({0})'.format(d['note'])
                 html += '<br />'
-                html += ' <button class="collapsible">[Bib]</button><div class="content"><p>' + bibtex +'</p></div>'
-                for t in optional:
-                    if t in d:
-                        if t == 'abstract': 
-                            html += ' <button class="collapsible">[Abstract]</button><div class="content"><p>{0}</p></div>'.format(d[t])
-                for t in optional:
-                    if t in d:
-                        if t == 'url': 
-                            html += ' <a href="{0}">[URL]</a>'.format(d[t])
-                        if t == 'doi': 
-                            html += ' <a href="https://doi.org/{0}">[doi]</a>'.format(d[t])
-                        if t == 'file': 
-                            html += ' <a href="{0}}">[pdf]</a>'.format(d[t])
+                if 'file' in d: html += '<a href="{0}">[pdf] </a>'.format(d['file'])
+                if 'url' in d: html += '<a href="{0}">[url] </a>'.format(d['url'])
+                if 'doi' in d: html += '<a href="https://doi.org/{0}">[doi] </a>'.format(d['doi'])
+                html += '<br />'
+                if 'abstract' in d: html += '<button class="collapsible">[↓ Abstract] </button><div class="content"><p>{0}</p></div>'.format(d['abstract'])
+                html += '<button class="collapsible">[↓ BibTeX]</button><div class="content"><p>' + bibtex +'</p></div>'
 
                 html += '</li>\n'
                 counter += 1
@@ -250,7 +261,6 @@ a = a.replace('<!--DATE-->', date.today().strftime('%d %b %Y'))
 # Join the header, list and footer html code
 final = a + html + b
 
-
 # Write the final result to the output file
-with open(outputfile, 'w') as f:
+with open(outputfile, 'w', encoding="UTF8") as f:
     f.write(final)
