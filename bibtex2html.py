@@ -198,10 +198,10 @@ for i in range(len(dictlist)):
 # Write down the list html code
 counter = 0
 html = ''
+html += '\n\n<ul>\n'
 for y in reversed(range(older, newer + 1)):
     if y in years:
         #html += '\n<h3 id="y{0}">{0}</h3>\n\n<ul>\n'.format(y)
-        html += '\n\n<ul>\n'
         for d in dictlist:
             # generate bibtex text
             bibtex = "@" + str(d['type']) + '{' + str(d['id']) + ',<br />'
@@ -254,7 +254,7 @@ for y in reversed(range(older, newer + 1)):
                 html += '</li>\n'
                 counter += 1
 
-        html += '</ul>\n'
+html += '</ul>\n'
 
 
 # Fill up the empty fields in the template
