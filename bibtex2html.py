@@ -213,11 +213,11 @@ for y in reversed(range(older, newer + 1)):
                 mandata = [d[key] for key in mandatory]
                 html += '<li><b>{1}</b>,<br /> {0} ({2}).<br />'.format(*mandata)
 
-                if 'journal' in d: html += '{0}'.format(d['journal'])
-                if 'eprint' in d: html += '{0}'.format(d['eprint'])
-                if 'booktitle' in d: html += '{0}'.format(d['booktitle'])
-                if 'volume' in d: html += '. Vol {0}'.format(d['volume'])
-                if 'chapter' in d: html += '. {0} ch'.format(d['chapter'])
+                if 'journal' in d: html += 'In {0}'.format(d['journal'])
+                if 'eprint' in d: html += 'In {0}'.format(d['eprint'])
+                if 'booktitle' in d: html += 'In {0}'.format(d['booktitle'])
+                if 'volume' in d: html += '. Volume {0}'.format(d['volume'])
+                if 'chapter' in d: html += '. Chapter {0} ch'.format(d['chapter'])
                 if 'pages' in d: 
                     a = cleanup_page(d['pages'])
                     html += ', pp. {0}'.format(a)
@@ -227,22 +227,22 @@ for y in reversed(range(older, newer + 1)):
                     except:
                         month = str(d['month']).capitalize()
                     html += ', {0}'.format(month)
-                if 'edition' in d: html += '. {0} ed'.format(d['edition'])
+                if 'edition' in d: html += '. Edition {0}'.format(d['edition'])
+                if 'number' in d: html += '. Number {0}'.format(d['number'])
                 if 'editor' in d: html += '. Editor {0}'.format(d['editor'])
                 if 'institution' in d: html += '. {0}'.format(d['institution'])
                 if 'address' in d: html += '. {0}'.format(d['address'])
-                if 'number' in d: html += ' ({0})'.format(d['number'])
                 if 'organization' in d: html += '. {0}'.format(d['organization'])
                 if 'publisher' in d: html += '. {0}'.format(d['publisher'])
                 if 'school' in d: html += '. {0}'.format(d['school'])
-                if 'series' in d: html += '. {0}'.format(d['series'])
+                if 'series' in d: html += '. Series {0}'.format(d['series'])
                 if 'note' in d: html += ' ({0})'.format(d['note'])
                 html += '<br />'
-                if 'file' in d: html += '<a href="{0}">[pdf] </a>'.format(d['file'])
-                if 'url' in d: html += '<a href="{0}">[url] </a>'.format(d['url'])
-                if 'doi' in d: html += '<a href="https://doi.org/{0}">[doi] </a>'.format(d['doi'])
+                if 'file' in d: html += '<a href="{0}">[pdf]</a> '.format(d['file'])
+                if 'url' in d: html += '<a href="{0}">[url]</a> '.format(d['url'])
+                if 'doi' in d: html += '<a href="https://doi.org/{0}">[doi]</a> '.format(d['doi'])
                 html += '<br />'
-                if 'abstract' in d: html += '<button class="collapsible">[↓ Abstract] </button><div class="content"><p>{0}</p></div>'.format(d['abstract'])
+                if 'abstract' in d: html += '<button class="collapsible">[↓ Abstract]</button><div class="content"><p>{0}</p></div>'.format(d['abstract'])
                 html += '<button class="collapsible">[↓ BibTeX]</button><div class="content"><p>' + bibtex +'</p></div>'
 
                 html += '</li>\n'
