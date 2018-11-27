@@ -200,7 +200,8 @@ counter = 0
 html = ''
 for y in reversed(range(older, newer + 1)):
     if y in years:
-        html += '\n<h3 id="y{0}">{0}</h3>\n\n<ul>\n'.format(y)
+        #html += '\n<h3 id="y{0}">{0}</h3>\n\n<ul>\n'.format(y)
+        html += '\n\n<ul>\n'
         for d in dictlist:
             # generate bibtex text
             bibtex = "@" + str(d['type']) + '{' + str(d['id']) + ',<br />'
@@ -213,6 +214,8 @@ for y in reversed(range(older, newer + 1)):
                 mandata = [d[key] for key in mandatory]
                 html += '<li><b>{1}</b>,<br /> {0} ({2}).<br />'.format(*mandata)
 
+                if d['type'] == 'thesis': html += 'Thesis'
+                if d['type'] == 'phdthesis': html += 'Ph.D. Thesis'
                 if 'journal' in d: html += 'In {0}'.format(d['journal'])
                 if 'eprint' in d: html += 'In {0}'.format(d['eprint'])
                 if 'booktitle' in d: html += 'In {0}'.format(d['booktitle'])
@@ -220,7 +223,10 @@ for y in reversed(range(older, newer + 1)):
                 if 'chapter' in d: html += '. Chapter {0} ch'.format(d['chapter'])
                 if 'pages' in d: 
                     a = cleanup_page(d['pages'])
-                    html += ', pp. {0}'.format(a)
+                    if str(d['pages']).isdigit():
+                        html += ', p. {0}'.format(a)
+                    else:
+                        html += ', pp. {0}'.format(a)
                 if 'month' in d: 
                     try:
                         month = calendar.month_name[int(d['month'])]
