@@ -52,28 +52,51 @@ def cleanup_author(s):
     '\\~A': '&Atilde;', '\\~o': '&otilde;', '\\~O': '&Otilde;', 
     '.': ' ', "\\'\\": '', '{': '', '}': '', ' And ': ' and '}
 
+    # replace entry in names from dictionary
     for k, v in dictionary.items():
         s = s.replace(k, v)
 
-    s = s.strip()
+    # split string of authors into single authors
+    authors = s.split('and')
+    ret = ""
+    counter = 0
+    for author in authors:
+        names = []
+        # split author into first and second name
+        if author.find(','):
+            names = author.split(',')
+            names.reverse()
+        else:
+            names = author.split()
+        # this takes care of middle names
+        names1 = []
+        for name in names:
+            t = name.split()
+            names1.extend(t)
+        names = names1
 
-    before, sep, after = s.rpartition(' and ')
-    before = before.replace(' and ', ', ')
-    s = before + sep + after
+        # add a dot, if only intial char of name
+        counter1 = 0
+        for name in names:
+            name = name.strip()
+            if len(name) == 1:
+                name += '.'
+            names[counter1] = name
+            counter1 += 1
 
-    return s
+        # join to single name
+        author = ' '.join(names)
 
+        # either add ',' or ', and' between names
+        ret += author
+        if counter < len(authors)-2:
+            ret += ', '
+        elif counter < len(authors)-1:
+            ret += ', and '
 
-def cleanup_title(s):
-    """Clean up and format article titles.
+        counter += 1
 
-    cleanup_title(str) -> str
-    """
-
-    s = s.lower()
-    s = s.capitalize()
-
-    return s
+    return ret
 
 
 def cleanup_page(s):
@@ -189,12 +212,6 @@ optional = ['journal', 'eprint', 'volume', 'pages', 'url', 'doi', 'abstract', 'n
 ###########################################################################
 
 
-# Clean up data
-for i in range(len(dictlist)):
-    dictlist[i]['author'] = cleanup_author(dictlist[i]['author'])
-    dictlist[i]['title'] = cleanup_title(dictlist[i]['title'])
-
-
 # Write down the list html code
 counter = 0
 html = ''
@@ -212,6 +229,7 @@ for y in reversed(range(older, newer + 1)):
             bibtex += '}'
             if 'year' in d and int(d['year']) == y:
                 mandata = [d[key] for key in mandatory]
+                mandata[0] = cleanup_author(mandata[0])
                 html += '<li><b>{1}</b>,<br /> {0} ({2}).<br />'.format(*mandata)
 
                 if d['type'] == 'thesis': html += 'Thesis'
@@ -251,7 +269,7 @@ for y in reversed(range(older, newer + 1)):
                 if 'abstract' in d: html += '<button class="collapsible">[↓ Abstract]</button><div class="content"><p>{0}</p></div>'.format(d['abstract'])
                 html += '<button class="collapsible">[↓ BibTeX]</button><div class="content"><p>' + bibtex +'</p></div>'
 
-                html += '</li>\n'
+                html += '</li><br />\n'
                 counter += 1
 
 html += '</ul>\n'
