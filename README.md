@@ -3,7 +3,7 @@
 This program reads a BibTeX file and converts it to a list of references in
 HTML format.
 
-To use this program you need Python installed on your computer.
+To use this program you need Python and Python's bibtexparser installed on your computer.
 
 ## File description
 
@@ -20,11 +20,12 @@ To run the program, in a command-line interface enter the command
 Here, `bibtex.bib` is the BibTeX file that you want to convert, and
 `template.html` is any template file containing the following placeholders:
 
-    <!--NUMBER_OF_REFERENCES-->
+    <!--NUM_OF_REFERENCES-->
     <!--NEWER-->
     <!--OLDER-->
     <!--DATE-->
     <!--LIST_OF_REFERENCES-->
+    <!--LIST_OF_REFERENCES_NOYEAR-->
 
 These placeholders will be replaced by the program, and the result will be
 written to the file `output.html`.
