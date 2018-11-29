@@ -146,11 +146,14 @@ if __name__ == '__main__':
     counter = 0
     htmlYear = '\n\n<ul>'
     htmlNoYear = '\n\n<ul>'
+    for bib in bib_database.entries[:]:
+        print(bibtexparser.dumps(bib))
+
     for y in reversed(range(older, newer + 1)):
         if y in years:
             htmlYear += '\n\n<h3 id="publications-year-{0}">{0}</h3>\n\n<ul>\n'.format(y)
-            html = ''
             for bib in bib_database.entries[:]:
+                html = ''
                 # generate bibtex text
                 bibtex = bibtexparser.dumps(bib)
 
@@ -198,8 +201,8 @@ if __name__ == '__main__':
                     html += '<button class="collapsible">[↓ BibTeX]</button><div class="content"><p>' + bibtex +'</p></div>'
                     html += '</li><br />\n'
 
-                    htmlYear += html
-                    htmlNoYear += html
+                    htmlYear += html + '\n'
+                    htmlNoYear += html + '\n'
 
                     counter += 1
     
