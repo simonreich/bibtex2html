@@ -146,16 +146,12 @@ if __name__ == '__main__':
     counter = 0
     htmlYear = '\n\n<ul>'
     htmlNoYear = '\n\n<ul>'
-    for bib in bib_database.entries[:]:
-        print(bibtexparser.dumps(bib))
 
     for y in reversed(range(older, newer + 1)):
         if y in years:
             htmlYear += '\n\n<h3 id="publications-year-{0}">{0}</h3>\n\n<ul>\n'.format(y)
             for bib in bib_database.entries[:]:
                 html = ''
-                # generate bibtex text
-                bibtex = bibtexparser.dumps(bib)
 
                 # generate html
                 if 'year' in bib and int(bib['year']) == y:
@@ -165,6 +161,9 @@ if __name__ == '__main__':
     
                     if bib['ENTRYTYPE'] == 'thesis': html += 'Thesis'
                     if bib['ENTRYTYPE'] == 'phdthesis': html += 'Ph.D. Thesis'
+                    if bib['ENTRYTYPE'] == 'mastersthesis': html += 'Master\'s Thesis'
+                    if bib['ENTRYTYPE'] == 'misc' and str(bib['note']).lower() == 'bachelor\'s thesis': html += 'Bachelor\'s Thesis'
+                    elif bib['ENTRYTYPE'] == 'misc': html += 'Misc'
                     if 'journal' in bib: html += 'In {0}'.format(bib['journal'])
                     if 'eprint' in bib: html += 'In {0}'.format(bib['eprint'])
                     if 'booktitle' in bib: html += 'In {0}'.format(bib['booktitle'])
@@ -198,6 +197,21 @@ if __name__ == '__main__':
                     if 'doi' in bib: html += '<a href="https://doi.org/{0}">[doi]</a> '.format(bib['doi'])
                     html += '<br />'
                     if 'abstract' in bib: html += '<button class="collapsible">[↓ Abstract]</button><div class="content"><p>{0}</p></div>'.format(bib['abstract'])
+                    # generate bibtex text
+                    bibtex_dict = bib_database.entries_dict[bib['ID']]
+                    bibtex = '@' + str(bib['ENTRYTYPE']) + '{' + bib['ID'] + ',<br />\n'
+                    counter1 = 0
+                    bibtexDoNotPrint = ['ID', 'ENTRYTYPE', 'file']
+                    for key, value in sorted(bibtex_dict.items()):
+                        if str(key) not in bibtexDoNotPrint:
+                            bibtex += '&nbsp;&nbsp;' + str(key) + " = {" + str(value) + '}'
+                            if counter1 < len(bibtex_dict)-1:
+                                bibtex += ',<br />\n'
+                            elif counter1 == len(bibtex_dict)-1:
+                                bibtex += '<br />\n'
+                        counter1 += 1
+                    bibtex += '}'
+
                     html += '<button class="collapsible">[↓ BibTeX]</button><div class="content"><p>' + bibtex +'</p></div>'
                     html += '</li><br />\n'
 
