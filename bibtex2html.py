@@ -193,7 +193,7 @@ if __name__ == '__main__':
                     if 'note' in bib: html += ' ({0})'.format(bib['note'])
                     html += '<br />'
                     if 'file' in bib: html += '<a href="{0}">[pdf]</a> '.format(bib['file'])
-                    if 'url' in bib: html += '<a href="{0}">[url]</a> '.format(bib['url'])
+                    if 'link' in bib: html += '<a href="{0}">[url]</a> '.format(bib['link'])
                     if 'doi' in bib: html += '<a href="https://doi.org/{0}">[doi]</a> '.format(bib['doi'])
                     html += '<br />'
                     if 'abstract' in bib: html += '<button class="collapsible">[↓ Abstract]</button><div class="content"><p>{0}</p></div>'.format(bib['abstract'])
