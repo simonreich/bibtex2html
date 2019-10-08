@@ -42,8 +42,8 @@ def main():
     bibDatabase = cParser.getBib()
         
     # Set the fields to be exported
-    fieldMandatory = ['author', 'title', 'year', 'journal', 'eprint', 'volume', 'pages', 'url', 'doi', 'abstract', 'note', 'address', 'annote', 'booktitle', 'chapter', 'crossref', 'edition', 'editor', 'howpublished', 'institution', 'key', 'month', 'number', 'organization', 'publisher', 'school', 'series', 'type', 'id', 'entrytype', 'bibtex']
-    fieldMandatory = sorted(fieldMandatory)
+    fieldMandatory = ['author', 'title', 'year', 'journal', 'eprint', 'volume', 'pages', 'url', 'doi', 'abstract', 'note', 'address', 'annote', 'booktitle', 'chapter', 'crossref', 'edition', 'editor', 'howpublished', 'institution', 'key', 'month', 'number', 'organization', 'publisher', 'school', 'series', 'type', 'ID', 'ENTRYTYPE', 'bibtex']
+    fieldMandatory = sorted(fieldMandatory, key=str.casefold)
 
     # Parse database
     for bib in bibDatabase.entries[:]:
