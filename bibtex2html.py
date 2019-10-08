@@ -37,10 +37,10 @@ import calendar
 import bibtexparser
 
 
-def cleanup_author(s):
+def cleanup_authors(s):
     """Clean up and format author names.
 
-    cleanup_author(str) -> str
+    cleanup_string(str) -> str
     """
 
     dictionary = {'\\"a': '&auml;', '\\"A': '&Auml;', '\\"e': '&euml;', 
@@ -100,6 +100,29 @@ def cleanup_author(s):
     return ret
 
 
+def cleanup_string(s):
+    """Clean up and format author names.
+
+    cleanup_string(str) -> str
+    """
+
+    dictionary = {'\\"a': '&auml;', '\\"A': '&Auml;', '\\"e': '&euml;', 
+    '\\"E': '&Euml;', '\\"i': '&iuml;', '\\"I': '&Iuml;', '\\"o': '&ouml;', 
+    '\\"O': '&Ouml;', '\\"u': '&uuml;', '\\"U': '&Uuml;', "\\'a": '&aacute;',
+    "\\'A": '&Aacute;', "\\'e": '&eacute;', "\\'i": '&iacute;', 
+    "\\'I": '&Iacute;', "\\'E": '&Eacute;', "\\'o": '&oacute;', 
+    "\\'O": '&Oacute;', "\\'u": '&uacute;', "\\'U": '&Uacute;', 
+    '\\~n': '&ntilde;', '\\~N': '&Ntilde;', '\\~a': '&atilde;', 
+    '\\~A': '&Atilde;', '\\~o': '&otilde;', '\\~O': '&Otilde;', 
+    '.': ' ', "\\'\\": '', '{': '', '}': ''}
+
+    # replace entry in names from dictionary
+    for k, v in dictionary.items():
+        s = s.replace(k, v)
+
+    return s
+
+
 def cleanup_page(s):
     """Clean up the article page string.
 
@@ -156,21 +179,21 @@ if __name__ == '__main__':
                 # generate html
                 if 'year' in bib and int(bib['year']) == y:
                     mandata = [bib[key] for key in mandatory]
-                    mandata[0] = cleanup_author(mandata[0])
+                    mandata[0] = cleanup_authors(mandata[0])
                     html += '<li><b>{1}</b>,<br /> {0} ({2}).<br />'.format(*mandata)
     
                     if bib['ENTRYTYPE'] == 'thesis': html += 'Thesis'
                     if bib['ENTRYTYPE'] == 'phdthesis': html += 'Ph.D. Thesis'
                     if bib['ENTRYTYPE'] == 'mastersthesis': html += 'Master\'s Thesis'
-                    if bib['ENTRYTYPE'] == 'misc' and str(bib['note']).lower() == 'bachelor\'s thesis': html += 'Bachelor\'s Thesis'
+                    if bib['ENTRYTYPE'] == 'misc' and str(cleanup_string(bib['note'])).lower() == 'bachelor\'s thesis': html += 'Bachelor\'s Thesis'
                     elif bib['ENTRYTYPE'] == 'misc': html += 'Misc'
-                    if 'journal' in bib: html += 'In {0}'.format(bib['journal'])
-                    if 'eprint' in bib: html += 'In {0}'.format(bib['eprint'])
-                    if 'booktitle' in bib: html += 'In {0}'.format(bib['booktitle'])
-                    if 'volume' in bib: html += '. Volume {0}'.format(bib['volume'])
-                    if 'chapter' in bib: html += '. Chapter {0} ch'.format(bib['chapter'])
+                    if 'journal' in bib: html += 'In {0}'.format(cleanup_string(bib['journal']))
+                    if 'eprint' in bib: html += 'In {0}'.format(cleanup_string(bib['eprint']))
+                    if 'booktitle' in bib: html += 'In {0}'.format(cleanup_string(bib['booktitle']))
+                    if 'volume' in bib: html += '. Volume {0}'.format(cleanup_string(bib['volume']))
+                    if 'chapter' in bib: html += '. Chapter {0} ch'.format(cleanup_string(bib['chapter']))
                     if 'pages' in bib: 
-                        a = cleanup_page(bib['pages'])
+                        a = cleanup_page(cleanup_string(bib['pages']))
                         if str(bib['pages']).isdigit():
                             html += ', p. {0}'.format(a)
                         else:
@@ -179,24 +202,24 @@ if __name__ == '__main__':
                         try:
                             month = calendar.month_name[int(bib['month'])]
                         except:
-                            month = str(bib['month']).capitalize()
+                            month = str(cleanup_string(bib['month'])).capitalize()
                         html += ', {0}'.format(month)
-                    if 'edition' in bib: html += '. Edition {0}'.format(bib['edition'])
-                    if 'number' in bib: html += '. Number {0}'.format(bib['number'])
-                    if 'editor' in bib: html += '. Editor {0}'.format(bib['editor'])
-                    if 'institution' in bib: html += '. {0}'.format(bib['institution'])
-                    if 'address' in bib: html += '. {0}'.format(bib['address'])
-                    if 'organization' in bib: html += '. {0}'.format(bib['organization'])
-                    if 'publisher' in bib: html += '. {0}'.format(bib['publisher'])
-                    if 'school' in bib: html += '. {0}'.format(bib['school'])
-                    if 'series' in bib: html += '. Series {0}'.format(bib['series'])
-                    if 'note' in bib: html += ' ({0})'.format(bib['note'])
+                    if 'edition' in bib: html += '. Edition {0}'.format(cleanup_string(bib['edition']))
+                    if 'number' in bib: html += '. Number {0}'.format(cleanup_string(bib['number']))
+                    if 'editor' in bib: html += '. Editor {0}'.format(cleanup_string(bib['editor']))
+                    if 'institution' in bib: html += '. {0}'.format(cleanup_string(bib['institution']))
+                    if 'address' in bib: html += '. {0}'.format(cleanup_string(bib['address']))
+                    if 'organization' in bib: html += '. {0}'.format(cleanup_string(bib['organization']))
+                    if 'publisher' in bib: html += '. {0}'.format(cleanup_string(bib['publisher']))
+                    if 'school' in bib: html += '. {0}'.format(cleanup_string(bib['school']))
+                    if 'series' in bib: html += '. Series {0}'.format(cleanup_string(bib['series']))
+                    if 'note' in bib: html += ' ({0})'.format(cleanup_string(bib['note']))
                     html += '<br />'
                     if 'file' in bib: html += '<a href="{0}">[pdf]</a> '.format(bib['file'])
                     if 'link' in bib: html += '<a href="{0}">[url]</a> '.format(bib['link'])
                     if 'doi' in bib: html += '<a href="https://doi.org/{0}">[doi]</a> '.format(bib['doi'])
                     html += '<br />'
-                    if 'abstract' in bib: html += '<button class="collapsible">[↓ Abstract]</button><div class="content"><p>{0}</p></div>'.format(bib['abstract'])
+                    if 'abstract' in bib: html += '<button class="collapsible">[↓ Abstract]</button><div class="content"><p>{0}</p></div>'.format(cleanup_string(bib['abstract']))
                     # generate bibtex text
                     bibtex_dict = bib_database.entries_dict[bib['ID']]
                     bibtex = '@' + str(bib['ENTRYTYPE']) + '{' + bib['ID'] + ',<br />\n'
