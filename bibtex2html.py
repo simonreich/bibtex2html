@@ -187,9 +187,9 @@ if __name__ == '__main__':
                     if bib['ENTRYTYPE'] == 'mastersthesis': html += 'Master\'s Thesis'
                     if bib['ENTRYTYPE'] == 'misc' and str(cleanup_string(bib['note'])).lower() == 'bachelor\'s thesis': html += 'Bachelor\'s Thesis'
                     elif bib['ENTRYTYPE'] == 'misc': html += 'Misc'
-                    if 'journal' in bib: html += 'In {0}'.format(cleanup_string(bib['journal']))
-                    if 'eprint' in bib: html += 'In {0}'.format(cleanup_string(bib['eprint']))
-                    if 'booktitle' in bib: html += 'In {0}'.format(cleanup_string(bib['booktitle']))
+                    if 'journal' in bib: html += 'In: {0}'.format(cleanup_string(bib['journal']))
+                    if 'eprint' in bib: html += 'In: {0}'.format(cleanup_string(bib['eprint']))
+                    if 'booktitle' in bib: html += 'In: {0}'.format(cleanup_string(bib['booktitle']))
                     if 'volume' in bib: html += '. Volume {0}'.format(cleanup_string(bib['volume']))
                     if 'chapter' in bib: html += '. Chapter {0} ch'.format(cleanup_string(bib['chapter']))
                     if 'pages' in bib: 
@@ -214,7 +214,7 @@ if __name__ == '__main__':
                     if 'school' in bib: html += '. {0}'.format(cleanup_string(bib['school']))
                     if 'series' in bib: html += '. Series {0}'.format(cleanup_string(bib['series']))
                     if 'note' in bib: html += ' ({0})'.format(cleanup_string(bib['note']))
-                    html += '<br />'
+                    html += '.<br />'
                     if 'file' in bib: html += '<a href="{0}">[pdf]</a> '.format(bib['file'])
                     if 'link' in bib: html += '<a href="{0}">[url]</a> '.format(bib['link'])
                     if 'doi' in bib: html += '<a href="https://doi.org/{0}">[doi]</a> '.format(bib['doi'])
