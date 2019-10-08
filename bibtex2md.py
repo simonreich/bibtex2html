@@ -52,28 +52,29 @@ def main():
         # generate md
         for field in fieldMandatory:
             if field in bib:
-                if field == 'bibtex':
-                    # generate bibtex html text
-                    fieldBibtex = bib['bibtex']
-                    count = fieldBibtex.count('\n') - 1
-                    fieldBibtex = fieldBibtex.replace('\n', '<br />\n&nbsp;&nbsp;', count)
-                    count = fieldBibtex.rfind('\n')
-                    fieldBibtex = fieldBibtex[:count] + '\n<br />' + fieldBibtex[count+1:]
-                    md += field.lower() + ': \'' + str(fieldBibtex) + '\'\n'
-                elif field == 'pages':
-                    fieldPages = bib['pages']
-                    if str(bib['pages']).isdigit():
-                        md += field.lower() + ': \'p. ' + str(fieldPages) + '\'\n'
+                if len(bib[field]) > 0:
+                    if field == 'bibtex':
+                        # generate bibtex html text
+                        fieldBibtex = bib['bibtex']
+                        count = fieldBibtex.count('\n') - 1
+                        fieldBibtex = fieldBibtex.replace('\n', '<br />\n&nbsp;&nbsp;', count)
+                        count = fieldBibtex.rfind('\n')
+                        fieldBibtex = fieldBibtex[:count] + '<br />\n' + fieldBibtex[count+1:]
+                        md += field.lower() + ': \'' + str(fieldBibtex) + '\'\n'
+                    elif field == 'pages':
+                        fieldPages = bib['pages']
+                        if str(bib['pages']).isdigit():
+                            md += field.lower() + ': \'p. ' + str(fieldPages) + '\'\n'
+                        else:
+                            md += field.lower() + ': \'pp. ' + str(fieldPages) + '\'\n'
+                    elif field == 'month':
+                        try:
+                            month = calendar.month_name[int(bib['month'])]
+                        except:
+                            month = str(bib['month']).capitalize()
+                        md += field.lower() + ': ' + str(month) + '\'\n'
                     else:
-                        md += field.lower() + ': \'pp. ' + str(fieldPages) + '\'\n'
-                elif field == 'month':
-                    try:
-                        month = calendar.month_name[int(bib['month'])]
-                    except:
-                        month = str(bib['month']).capitalize()
-                    md += field.lower() + ': ' + str(month) + '\'\n'
-                else:
-                    md += field.lower() + ': \'' + bib[field] + '\'\n'
+                        md += field.lower() + ': \'' + bib[field] + '\'\n'
         md += '---\n'
 
         # generate filename
