@@ -33,7 +33,7 @@ from bibtex2parser import bibtex2parser
 
 
 def main():
-    # Get the BibTeX, template, and output file names
+    # Get the BibTeX file and output folder
     bibfile = sys.argv[1]
     folderOut = sys.argv[2]
 
