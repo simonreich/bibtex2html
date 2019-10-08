@@ -70,6 +70,7 @@ def main():
     htmlYear = '\n\n<ul>'
     htmlNoYear = '\n\n<ul>'
 
+    # Parse database
     for y in reversed(range(older, newer + 1)):
         if y in years:
             htmlYear += '\n\n<h3 id="publications-year-{0}">{0}</h3>\n\n<ul>\n'.format(y)
