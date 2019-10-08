@@ -126,7 +126,7 @@ def main():
                     count = fieldBibtex.count('\n') - 1
                     fieldBibtex = fieldBibtex.replace('\n', '<br />\n&nbsp;&nbsp;', count)
                     count = fieldBibtex.rfind('\n')
-                    fieldBibtex = fieldBibtex[:count] + '\n<br />' + fieldBibtex[count+1:]
+                    fieldBibtex = fieldBibtex[:count] + '<br />\n' + fieldBibtex[count+1:]
                     html += '<button class="collapsible">[↓ BibTeX]</button><div class="content"><p>' + fieldBibtex +'</p></div>'
                     html += '</li><br />\n'
 
