@@ -30,7 +30,27 @@ Here, `bibtex.bib` is the BibTeX file that you want to convert, and
 These placeholders will be replaced by the program, and the result will be
 written to the file `output.html`.
 
-## License
+# Bibtex2md
+
+This program reads a BibTeX file and converts it to a list of references in
+markdown format.
+
+To use this program you need Python and Python's bibtexparser installed on your computer.
+
+## File description
+
+* `bibtex2md.py`: the bibtex2md program.
+* `example.bib`: example of BibTeX file.
+
+## Usage
+
+To run the program, in a command-line interface enter the command
+
+    python bibtex2md.py bibtex.bib ./output/folder
+
+Here, `bibtex.bib` is the BibTeX file that you want to convert, and `./output/folder` is the output folder where the final files will be placed. There will be one file per bibtex entry.
+
+# License
 
 Copyright (C) 2009-2018 Gustavo de Oliveira. Licensed under the GPLv2 (see the [license](LICENSE.txt) file).
 
