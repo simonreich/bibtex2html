@@ -145,11 +145,12 @@ class parser:
             bibtexDoNotPrint = ['ID', 'ENTRYTYPE', 'file']
             for key, value in sorted(bibtex_dict.items()):
                 if str(key) not in bibtexDoNotPrint:
-                    bibtex += '' + str(key) + " = {" + str(value) + '}'
-                    if counter1 < len(bibtex_dict)-1:
-                        bibtex += ',\n'
-                    elif counter1 == len(bibtex_dict)-1:
-                        bibtex += '\n'
+                    if len(value) > 0:
+                        bibtex += '' + str(key) + " = {" + str(value) + '}'
+                        if counter1 < len(bibtex_dict)-1:
+                            bibtex += ',\n'
+                        elif counter1 == len(bibtex_dict)-1:
+                            bibtex += '\n'
                 counter1 += 1
             bibtex += '}'
             bib_database.entries_dict[bib['ID']]['bibtex'] = bibtex
